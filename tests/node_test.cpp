@@ -1,14 +1,31 @@
 #include <iostream>
-#include "Node.cpp"
+#include <gtest/gtest.h>
+#include "../src/Node/Node.cpp" // Include the header file for the code being tested
 
-int main() {
-    // Create a Node object with some initial data
+// Define a test case named NodeCreation
+TEST(NodeCreation, node_ctor)
+{
     Node<int, double> node(1, 2.0);
     Node_data<int, double> *ptr = node.node;
-    
-    std::cout << "size after creation: " << ptr->buffer_size << std::endl;
-    std::cout << "is full after creation: " << node.is_full() << std::endl;
-    std::cout << "Value associated with key 1: " << node.get_value(1).first << std::endl;
+
+    // Assert: Verify the results
+    EXPECT_EQ(ptr->buffer_size, 1);
+    EXPECT_FALSE(node.is_full());
+    EXPECT_EQ(node.get_value(1).first, 2.0);
+}
+
+/*
+int main(int argc, char **argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+*/
+
+/*
+int main() {
+    // Create a Node object with some initial data
+
 
     node.insert(2, 3.0);
     std::cout << "size after insertion: " << ptr->buffer_size << std::endl;
@@ -30,3 +47,4 @@ int main() {
     // Add some key-value pairs to the buffer
     return 0;
 }
+*/

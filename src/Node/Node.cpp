@@ -17,7 +17,7 @@ Node<K, V>::Node(K key, V value)
 }
 
 template <typename K, typename V>
-Node<K,V>::~Node()
+Node<K, V>::~Node()
 {
     delete node;
 }
@@ -37,9 +37,9 @@ K Node<K, V>::get_index()
 template <typename K, typename V>
 std::pair<V, bool> Node<K, V>::get_value(K key)
 {
-    for(Record<K, V> record_i : node->buffer)
+    for (Record<K, V> record_i : node->buffer)
     {
-        if(record_i.record_key == key)
+        if (record_i.record_key == key)
         {
             return std::make_pair(record_i.record_value, true);
         }
@@ -49,23 +49,21 @@ std::pair<V, bool> Node<K, V>::get_value(K key)
 
 template <typename K, typename V>
 bool Node<K, V>::insert(K key, V value)
-{   
+{
     // Ensure enough capacity to store into buffer
-    if(!is_full())
+    if (!is_full())
     {
         node->buffer[node->buffer_size].record_key = key;
         node->buffer[node->buffer_size].record_value = value;
         node->buffer_size++;
         return true;
     }
-    // Will 
-    // TODO: need to create a new node if needed and store as left/right child here
     return false;
 }
 
 template <typename K, typename V>
 bool Node<K, V>::remove(K key, V value)
-{   
+{
     // TODO
     return false;
 }
