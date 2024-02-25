@@ -8,7 +8,8 @@ Node<K, V>::Node(K key, V value)
 {
     node = new Node_data<K, V>();
     // Allocate memory for Node_data
-    node->buffer[0].data = std::make_pair(key, value);
+    node->buffer[0].record_key = key;
+    node->buffer[0].record_value = value;
     node->buffer_size = 1;
     node->left = nullptr;
     node->right = nullptr;
@@ -34,16 +35,16 @@ K Node<K, V>::get_index()
 }
 
 template <typename K, typename V>
-V Node<K, V>::get_value(K key)
+std::pair<V, bool> Node<K, V>::get_value(K key)
 {
-    for(Data<K, V> data : node->buffer)
+    for(Record<K, V> record_i : node->buffer)
     {
-        if(data.data.first == key)
+        if(record_i.record_key == key)
         {
-            return data.data.second;
+            return std::make_pair(record_i.record_value, true);
         }
     }
-    return -2;
+    return std::make_pair(V{}, false);
 }
 
 template <typename K, typename V>
@@ -52,7 +53,8 @@ bool Node<K, V>::insert(K key, V value)
     // Ensure enough capacity to store into buffer
     if(!is_full())
     {
-        node->buffer[node->buffer_size].data = std::make_pair(key, value);
+        node->buffer[node->buffer_size].record_key = key;
+        node->buffer[node->buffer_size].record_value = value;
         node->buffer_size++;
         return true;
     }

@@ -15,9 +15,11 @@ class Node;
 
 // Data struct
 template <typename K, typename V>
-struct Data
+struct Record
 {
-    std::pair<K, V> data;
+    K record_key;
+    V record_value;
+    float record_index;
 };
 
 // Node Struct
@@ -25,7 +27,7 @@ template <typename K, typename V>
 struct Node_data
 {   
     static constexpr int MAX_CAPACITY = 4;
-    Data<K, V> buffer[MAX_CAPACITY];
+    Record<K, V> buffer[MAX_CAPACITY];
     K index;
     int buffer_size;
     float timeStamp;
@@ -49,8 +51,8 @@ class Node
         bool is_full();
         /* Returns the current index pointer of this node. */
         K get_index();
-        /* Returns the value associated with this key if it's in this node. Otherwise returns NULL. */
-        V get_value(K key);
+        /* Returns a pair association value associated with the provided key. If the key is found in this node's buffer, returns the value associated with the key and a boolean flag of True indicating key value found, otherwise returns the default value for the value type, and a false flag indicating key was not found. */
+        std::pair<V, bool> get_value(K key);
         /* Attempts to insert the provided key/value pair into this node's buffer, returns true if succesful, false otherwise.*/
         bool insert(K key, V value);
         /* Attempts to remove the provided key/value pair if in this node's buffer, returns true if succesful, false otherwise.*/
