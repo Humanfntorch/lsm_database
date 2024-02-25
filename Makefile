@@ -8,7 +8,7 @@ TEST_DIR=./tests/
 GTEST_DIR = ./tests/
 GTEST_LIBS = $(GTEST_DIR)libgtest_main.a $(GTEST_DIR)libgtest.a
 
-# Define the source files for the Node class
+# Define the source files for the classes needed for testing
 NODE_SOURCES := $(wildcard $(SRC_DIR)*.cpp)
 NODE_OBJECTS := $(NODE_SOURCES:.cpp=.o)
 
@@ -16,7 +16,7 @@ NODE_OBJECTS := $(NODE_SOURCES:.cpp=.o)
 TEST_SOURCES := $(wildcard $(TEST_DIR)*.cpp)
 TEST_OBJECTS := $(TEST_SOURCES:.cpp=.o)
 
-# Define the executable binary
+# Executable ot run all tests
 BIN=test
 
 all: $(BIN)

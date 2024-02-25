@@ -14,37 +14,68 @@ TEST(NodeCreation, node_ctor)
     EXPECT_EQ(node.get_value(1).first, 2.0);
 }
 
-/*
-int main(int argc, char **argv)
+TEST(NodeInsertion_1, node_insert1)
 {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
-*/
-
-/*
-int main() {
-    // Create a Node object with some initial data
-
-
+    Node<int, double> node(1, 2.0);
+    Node_data<int, double> *ptr = node.node;
     node.insert(2, 3.0);
-    std::cout << "size after insertion: " << ptr->buffer_size << std::endl;
-    std::cout << "Value associated with key 2: " << node.get_value(2).first << std::endl;
-    std::cout << "is full after insertion: " << node.is_full() << std::endl;
-
-
-    node.insert(3, 4.0);
-    std::cout << "size after insertion: " << ptr->buffer_size << std::endl;
-    std::cout << "Value associated with key 3: " << node.get_value(3).first << std::endl;
-    std::cout << "is full after insertion: " << node.is_full() << std::endl;
-
-    node.insert(4, 5.0);
-    std::cout << "size after insertion: " << ptr->buffer_size << std::endl;
-    std::cout << "Value associated with key not in buffer: " << node.get_value(10).first << std::endl;
-    std::cout << "Bool Flag associated with key not in buffer: " << node.get_value(10).second << std::endl;
-    std::cout << "is full after insertion: " << node.is_full() << std::endl;
-
-    // Add some key-value pairs to the buffer
-    return 0;
+    EXPECT_EQ(ptr->buffer_size, 2);
+    EXPECT_FALSE(node.is_full());
+    EXPECT_EQ(node.get_value(2).first, 3.0);
 }
-*/
+
+TEST(NodeInsertion_2, node_insert2)
+{
+    Node<int, double> node(1, 2.0);
+    Node_data<int, double> *ptr = node.node;
+    node.insert(2, 3.0);
+    node.insert(3, 4.0);
+
+    EXPECT_EQ(ptr->buffer_size, 3);
+    EXPECT_FALSE(node.is_full());
+    EXPECT_EQ(node.get_value(1).first, 2.0);
+    EXPECT_EQ(node.get_value(2).first, 3.0);
+    EXPECT_EQ(node.get_value(3).first, 4.0);
+}
+
+TEST(NodeInsertion_3, node_insert3)
+{
+    Node<int, double> node(1, 2.0);
+    Node_data<int, double> *ptr = node.node;
+    node.insert(2, 3.0);
+    node.insert(3, 4.0);
+    node.insert(4, 5.0);
+
+    EXPECT_EQ(ptr->buffer_size, 4);
+    std::pair res = node.get_value(1);
+    EXPECT_EQ(res.first, 2.0);
+    EXPECT_TRUE(res.second);
+
+    res = node.get_value(2);
+    EXPECT_EQ(res.first, 3.0);
+    EXPECT_TRUE(res.second);
+
+    res = node.get_value(3);
+    EXPECT_EQ(res.first, 4.0);
+    EXPECT_TRUE(res.second);
+
+    res = node.get_value(4);
+    EXPECT_EQ(res.first, 5.0);
+    EXPECT_TRUE(res.second);
+    EXPECT_TRUE(node.is_full());
+}
+
+TEST(Node_get_value_return_false, node_get_value1)
+{
+    Node<int, double> node(1, 2.0);
+    Node_data<int, double> *ptr = node.node;
+
+    EXPECT_EQ(ptr->buffer_size, 1);
+    std::pair res = node.get_value(1);
+    EXPECT_EQ(res.first, 2.0);
+    EXPECT_TRUE(res.second);
+
+    res = node.get_value(4);
+    EXPECT_EQ(res.first, 0.0);
+    EXPECT_FALSE(res.second);
+}
