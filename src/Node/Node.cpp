@@ -1,19 +1,29 @@
+/*
+    Author: Jacob Rogers
+    File: Node.cpp
+    Purpose: Implements the Node interface. 
+    Each Node acts indepedently from another and has control over it's own buffer.
+*/
 #include <iostream>
 #include <utility>
 #include "Node.h"
+#include "../Hasher/Hasher.h"
 
 // Constructor definition
 template <typename K, typename V>
 Node<K, V>::Node(K key, V value)
-{
+{   
+    // Allocate memory for Node_data and initiate the node
     node = new Node_data<K, V>();
-    // Allocate memory for Node_data
     node->buffer[0].record_key = key;
     node->buffer[0].record_value = value;
     node->buffer_size = 1;
     node->left = nullptr;
     node->right = nullptr;
-    node->index = key;
+
+    // Create hasher and determine index
+    Hasher<K> hasher;
+    node->buffer[0].record_index = hasher(key);
 }
 
 template <typename K, typename V>
@@ -55,6 +65,8 @@ bool Node<K, V>::insert(K key, V value)
     {
         node->buffer[node->buffer_size].record_key = key;
         node->buffer[node->buffer_size].record_value = value;
+        Hasher<K> hasher;
+        node->buffer[node->buffer_size].record_index = hasher(key);
         node->buffer_size++;
         return true;
     }

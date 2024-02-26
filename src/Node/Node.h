@@ -19,7 +19,7 @@ struct Record
 {
     K record_key;
     V record_value;
-    float record_index;
+    unsigned int record_index;
     float timeStamp;
 };
 
